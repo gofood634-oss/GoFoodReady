@@ -1,0 +1,27 @@
+{
+  "name": "gofood-fullstack",
+  "version": "1.0.0",
+  "description": "GoFood - Full-stack food delivery application",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "clean": "cd backend && npm run clean 2>/dev/null || true && cd ../frontend && npm run clean 2>/dev/null || true"
+  },
+  "keywords": [
+    "food-delivery",
+    "fullstack",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

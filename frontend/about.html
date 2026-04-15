@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About - Go Food</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#ff6b35;--muted:#f5f5f5;--dark:#222}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; margin:0;color:var(--dark);background:#fff}
+    header{background:linear-gradient(90deg,#fff 0%, #fff 60%, #fff0 100%);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav a{margin-left:16px;text-decoration:none;color:#333;font-weight:600}
+    .page-header{padding:36px 24px;text-align:center;border-bottom:1px solid #eee}
+    .page-header h1{margin:0 0 8px;font-size:32px}
+    .page-header p{margin:0;color:#555}
+    .content{max-width:800px;margin:40px auto;padding:0 24px;line-height:1.8}
+    .content h2{font-size:24px;margin:30px 0 16px;color:var(--primary)}
+    .content p{color:#555;margin-bottom:16px}
+    .content ul{margin:16px 0;padding-left:24px}
+    .content li{margin-bottom:12px;color:#555}
+    footer{padding:18px 24px;text-align:center;color:#777;border-top:1px solid #eee;margin-top:40px}
+    @media (max-width:900px){.content{margin:20px auto;padding:0 16px}}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" style="text-decoration:none;display:flex;gap:12px;align-items:center">
+      <div class="brand">
+        <div class="logo">GF</div>
+        <div>
+          <div style="font-weight:700">Go Food</div>
+          <div style="font-size:12px;color:#666">Destination for foodies</div>
+        </div>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>About Go Food</h1>
+      <p>Your trusted destination for delicious meals delivered fast</p>
+    </div>
+
+    <div class="content">
+      <p>Go Food started as a small cloud kitchen aiming to deliver restaurant-quality meals across the city. Our mission is to make delicious food accessible to everyone, everywhere, anytime.</p>
+
+      <h2>Our Story</h2>
+      <p>Founded in 2023, Go Food began with a simple idea: what if you could get restaurant-quality meals delivered to your door in under 30 minutes? We partnered with local restaurants and talented chefs to build a platform that connects food lovers with amazing cuisine.</p>
+
+      <h2>Our Values</h2>
+      <ul>
+        <li><strong>Quality:</strong> We work only with trusted restaurants and quality ingredients</li>
+        <li><strong>Speed:</strong> Fast delivery is our promise - 30 minutes or less</li>
+        <li><strong>Reliability:</strong> Track your order in real-time and know exactly when it arrives</li>
+        <li><strong>Affordability:</strong> Great food shouldn't break the bank - we offer competitive prices</li>
+        <li><strong>Sustainability:</strong> We're committed to eco-friendly packaging and practices</li>
+      </ul>
+
+      <h2>What Sets Us Apart</h2>
+      <p>Unlike traditional delivery apps, we partner directly with restaurants to ensure quality control. Our team carefully curates each menu, and we maintain strict hygiene and food safety standards.</p>
+
+      <h2>Production-Ready Technology</h2>
+      <p>This demo site showcases our frontend structure. To make it production-ready, you'll need:</p>
+      <ul>
+        <li>Backend API (PHP/Node.js/Python)</li>
+        <li>Database (MySQL/PostgreSQL) for users, orders, and restaurants</li>
+        <li>Payment gateway integration</li>
+        <li>Admin dashboard for restaurant and order management</li>
+        <li>Real-time delivery tracking system</li>
+      </ul>
+
+      <h2>Contact Us</h2>
+      <p>Have questions? We'd love to hear from you! Visit our <a href="contact.html" style="color:var(--primary);text-decoration:none;font-weight:600">contact page</a> to get in touch.</p>
+    </div>
+  </main>
+
+  <footer>
+    © Go Food — Built as a project.
+  </footer>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('gofood_cart')||'{}');
+    const keys = Object.keys(cart);
+    document.getElementById('cart-count').textContent = keys.reduce((s,k)=>s+cart[k].qty,0);
+
+
+  </script>
+</body>
+</html>

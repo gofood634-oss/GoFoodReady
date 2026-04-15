@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout - Go Food</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6b35;
+      --muted: #f5f5f5;
+      --dark: #222
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+      margin: 0;
+      color: var(--dark);
+      background: #fff
+    }
+
+    header {
+      background: linear-gradient(90deg, #fff 0%, #fff 60%, #fff0 100%);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700
+    }
+
+    nav a {
+      margin-left: 16px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 600
+    }
+
+    .page-header {
+      padding: 24px;
+      border-bottom: 1px solid #eee
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 32px
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #555
+    }
+
+    .checkout-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px
+    }
+
+    .checkout-form {
+      background: #fff
+    }
+
+    .form-section {
+      margin-bottom: 24px
+    }
+
+    .form-section h2 {
+      font-size: 20px;
+      margin: 0 0 16px;
+      color: var(--dark)
+    }
+
+    .form-group {
+      margin-bottom: 16px
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+      font-size: 14px
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1)
+    }
+
+    .place-order-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 16px;
+      font-size: 16px
+    }
+
+    .place-order-btn:hover {
+      background: #e55a2b
+    }
+
+    .place-order-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed
+    }
+
+    .order-summary {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      background: #fafafa;
+      height: fit-content
+    }
+
+    .order-summary h3 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      color: var(--dark)
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: var(--dark)
+    }
+
+    .item-price {
+      color: #666
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #555
+    }
+
+    .summary-row.total {
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #ddd
+    }
+
+    .success-message {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      border: 1px solid #c3e6cb
+    }
+
+    .error-message {
+      display: none;
+      background: #f8d7da;
+      color: #721c24;
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      border: 1px solid #f5c6cb
+    }
+
+    footer {
+      padding: 18px 24px;
+      text-align: center;
+      color: #777;
+      border-top: 1px solid #eee;
+      margin-top: 40px
+    }
+
+    @media (max-width:900px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+        padding: 0 16px
+      }
+    }
+  </style>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" style="text-decoration:none;display:flex;gap:12px;align-items:center">
+      <div class="brand">
+        <div class="logo">GF</div>
+        <div>
+          <div style="font-weight:700">Go Food</div>
+          <div style="font-size:12px;color:#666">Destination for foodies</div>
+        </div>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>Checkout</h1>
+      <p>Complete your order by providing delivery details and payment method</p>
+    </div>
+
+    <div class="checkout-container">
+      <div class="checkout-form">
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+
+        <form id="checkout-form">
+          <div class="form-section">
+            <h2>Delivery Details</h2>
+            <div class="form-group">
+              <label for="address">Delivery Address *</label>
+              <textarea id="address" name="address" placeholder="Enter your full delivery address..."
+                required></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2>Payment Method</h2>
+            <div class="form-group"
+              style="display: flex; gap: 20px; align-items: center; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 0;">
+                <input type="radio" name="paymentMethod" value="COD" checked style="width: auto;"> Cash on Delivery
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 0;">
+                <input type="radio" name="paymentMethod" value="ONLINE" style="width: auto;"> Pay Online
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="place-order-btn" id="place-order-btn">Place Order</button>
+        </form>
+      </div>
+
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div id="order-items">
+          <!-- Items will be loaded here -->
+        </div>
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>₹<span id="subtotal">0.00</span></span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery:</span>
+          <span>₹<span id="delivery">50.00</span></span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>₹<span id="total">50.00</span></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © Go Food — Built as a project.
+  </footer>
+
+  <script>
+    const deliveryFee = 50;
+    const RAZORPAY_KEY_ID = 'rzp_test_Sdd0OpUhZlcIoW'; // Replace with your actual key
+    let cart = JSON.parse(localStorage.getItem('gofood_cart') || '{}');
+
+    function renderOrderSummary() {
+      const orderItemsDiv = document.getElementById('order-items');
+      const subtotalEl = document.getElementById('subtotal');
+      const totalEl = document.getElementById('total');
+
+      const keys = Object.keys(cart);
+      if (keys.length === 0) {
+        window.location.href = 'cart.html';
+        return;
+      }
+
+      orderItemsDiv.innerHTML = '';
+      let subtotal = 0;
+
+      keys.forEach(k => {
+        const item = cart[k];
+        subtotal += item.price * item.qty;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'item-row';
+        itemDiv.innerHTML = `
+          <div>
+            <div class="item-name">${item.title}</div>
+            <div class="item-price">₹${item.price} × ${item.qty}</div>
+          </div>
+          <div class="item-price" style="font-weight:600">₹${(item.price * item.qty).toFixed(2)}</div>
+        `;
+        orderItemsDiv.appendChild(itemDiv);
+      });
+
+      subtotalEl.textContent = subtotal.toFixed(2);
+      totalEl.textContent = (subtotal + deliveryFee).toFixed(2);
+    }
+
+    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const address = document.getElementById('address').value.trim();
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const errorDiv = document.getElementById('error-message');
+      const successDiv = document.getElementById('success-message');
+      const submitBtn = document.getElementById('place-order-btn');
+
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      if (!address || !paymentMethod) {
+        errorDiv.textContent = 'Please fill in all required fields';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      const keys = Object.keys(cart);
+      if (keys.length === 0) {
+        errorDiv.textContent = 'Your cart is empty';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      const items = keys.map(k => ({
+        itemId: k,
+        title: cart[k].title,
+        price: cart[k].price,
+        quantity: cart[k].qty
+      }));
+
+      let subtotal = 0;
+      keys.forEach(k => { subtotal += cart[k].price * cart[k].qty; });
+      const total = subtotal + deliveryFee;
+
+      const orderData = {
+        items,
+        total,
+        address,
+        paymentMethod
+      };
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        errorDiv.textContent = 'Please login to place an order';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+
+      if (paymentMethod === 'COD') {
+        try {
+          const response = await fetch('http://localhost:5000/api/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(orderData)
+          });
+          const data = await response.ok ? await response.json() : null;
+          if (response.ok) {
+            localStorage.removeItem('gofood_cart');
+            window.location.href = 'order-success.html?orderId=' + data.order._id;
+          } else {
+            const errData = await response.json();
+            throw new Error(errData.error || 'Failed to place order');
+          }
+        } catch (error) {
+          errorDiv.textContent = 'Error: ' + error.message;
+          errorDiv.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Place Order';
+        }
+      } else {
+        // Online Payment Flow
+        try {
+          const res = await fetch('http://localhost:5000/api/payment/create-order', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ amount: total })
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || 'Failed to initiate payment');
+          }
+
+          const rzpOrder = await res.json();
+
+          const options = {
+            key: RAZORPAY_KEY_ID,
+            amount: rzpOrder.amount,
+            currency: rzpOrder.currency,
+            name: "Go Food",
+            description: "Food Order Payment",
+            order_id: rzpOrder.order_id,
+            handler: async function (response) {
+              // Verify payment on backend
+              try {
+                const verifyRes = await fetch('http://localhost:5000/api/payment/verify', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                  },
+                  body: JSON.stringify({
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                    orderDetails: orderData
+                  })
+                });
+
+                const verifyData = await verifyRes.json();
+                if (verifyRes.ok) {
+                  localStorage.removeItem('gofood_cart');
+                  window.location.href = 'order-success.html?orderId=' + verifyData.order._id;
+                } else {
+                  throw new Error(verifyData.error || 'Payment verification failed');
+                }
+              } catch (err) {
+                alert('Payment verification failed: ' + err.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Place Order';
+              }
+            },
+            prefill: {
+              name: "", // Can be filled if user details are available
+              email: "",
+              contact: ""
+            },
+            theme: { color: "#ff6b35" },
+            modal: {
+              ondismiss: function () {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Place Order';
+              }
+            }
+          };
+
+          const rzp1 = new Razorpay(options);
+          rzp1.open();
+
+        } catch (error) {
+          errorDiv.textContent = 'Error: ' + error.message;
+          errorDiv.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Place Order';
+        }
+      }
+    });
+
+    renderOrderSummary();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Placed - Go Food</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#ff6b35;--muted:#f5f5f5;--dark:#222;--success:#4caf50}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; margin:0;color:var(--dark);background:#fff}
+    header{background:linear-gradient(90deg,#fff 0%, #fff 60%, #fff0 100%);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav a{margin-left:16px;text-decoration:none;color:#333;font-weight:600}
+    .success-container{max-width:600px;margin:60px auto;padding:0 24px;text-align:center}
+    .success-icon{width:80px;height:80px;margin:0 auto 24px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px}
+    .success-container h1{font-size:32px;margin:0 0 12px;color:var(--dark)}
+    .success-container p{font-size:16px;color:#555;margin:0 0 32px;line-height:1.6}
+    .order-details{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:24px;margin:32px 0;text-align:left}
+    .detail-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eee;font-size:14px}
+    .detail-row:last-child{border-bottom:none}
+    .detail-label{font-weight:600;color:#666}
+    .detail-value{color:var(--dark);font-weight:500}
+    .action-buttons{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+    .btn{padding:12px 24px;text-decoration:none;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:16px;display:inline-block}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:#e55a2b}
+    .btn-secondary{background:#f0f0f0;color:#333;border:1px solid #ddd}
+    .btn-secondary:hover{background:#e8e8e8}
+    footer{padding:18px 24px;text-align:center;color:#777;border-top:1px solid #eee;margin-top:60px}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" style="text-decoration:none;display:flex;gap:12px;align-items:center">
+      <div class="brand">
+        <div class="logo">GF</div>
+        <div>
+          <div style="font-weight:700">Go Food</div>
+          <div style="font-size:12px;color:#666">Destination for foodies</div>
+        </div>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="success-container">
+      <div class="success-icon">✓</div>
+      <h1>Order Placed Successfully!</h1>
+      <p>Your order has been confirmed and will be prepared shortly. You will receive a confirmation via email.</p>
+      
+      <div class="order-details" id="order-details">
+        <h3 style="margin:0 0 16px;font-size:18px">Order Items</h3>
+        <div id="order-items" style="margin-bottom:24px"></div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Order ID:</span>
+          <span class="detail-value" id="order-id">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Total Amount:</span>
+          <span class="detail-value" id="order-total">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Delivery Address:</span>
+          <span class="detail-value" id="order-address">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Payment Method:</span>
+          <span class="detail-value" id="order-payment">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Status:</span>
+          <span class="detail-value" id="order-status">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Date & Time:</span>
+          <span class="detail-value" id="order-date">-</span>
+        </div>
+      </div>
+
+      <p style="color:#666;font-size:14px">Your food will be delivered shortly. Track your order status from your profile.</p>
+
+      <div class="action-buttons">
+        <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+        <a href="cart.html" class="btn btn-secondary">Back to Cart</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © Go Food — Built as a project.
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('orderId');
+
+      if(orderId){
+        try {
+          const token = localStorage.getItem('token');
+          if(!token) return;
+
+          const response = await fetch('http://localhost:5000/api/orders/' + orderId, {
+            headers: {
+              'Authorization': 'Bearer ' + token
+            }
+          });
+
+          if(response.ok){
+            const order = await response.json();
+            document.getElementById('order-id').textContent = order._id;
+            document.getElementById('order-total').textContent = '₹' + order.total.toFixed(2);
+            document.getElementById('order-address').textContent = order.address;
+            document.getElementById('order-payment').textContent = order.paymentMethod;
+            document.getElementById('order-status').textContent = order.status;
+            document.getElementById('order-date').textContent = new Date(order.createdAt).toLocaleString();
+            
+            const itemsContainer = document.getElementById('order-items');
+            if(order.items && order.items.length > 0){
+              itemsContainer.innerHTML = order.items.map(item => `
+                <div style="padding:8px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;font-size:14px">
+                  <span>${item.quantity}x ${item.title || 'Item ' + item.itemId}</span>
+                  <span style="font-weight:600">₹${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              `).join('');
+            }
+          }
+        } catch (error){
+          console.error('Error loading order:', error);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

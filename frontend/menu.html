@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu - Go Food</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#ff6b35;--muted:#f5f5f5;--dark:#222}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; margin:0;color:var(--dark);background:#fff}
+    header{background:linear-gradient(90deg,#fff 0%, #fff 60%, #fff0 100%);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav a{margin-left:16px;text-decoration:none;color:#333;font-weight:600}
+    .page-header{padding:24px;border-bottom:1px solid #eee}
+    .page-header h1{margin:0 0 8px;font-size:28px}
+    .page-header p{margin:0;color:#555}
+    .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:24px}
+    .card{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+    .card img{width:100%;height:140px;object-fit:cover}
+    .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
+    .card-title{font-weight:700;margin:0 0 6px}
+    .card-desc{font-size:13px;color:#666;margin-bottom:8px}
+    .card-footer{display:flex;align-items:center;justify-content:space-between}
+    .price{font-weight:700}
+    .add-btn{background:var(--primary);color:#fff;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+    aside.cart{position:fixed;right:18px;top:80px;width:320px;border-left:1px solid #eee;background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.06)}
+    aside.cart h3{margin:0 0 12px}
+    .cart-list{max-height:320px;overflow:auto;margin-bottom:12px}
+    .cart-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed #eee}
+    .qty{display:flex;gap:6px;align-items:center}
+    .btn-small{padding:6px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
+    footer{padding:18px 24px;text-align:center;color:#777;border-top:1px solid #eee;margin-top:40px}
+    .back-btn{padding:8px 12px;background:#f0f0f0;border:none;border-radius:6px;cursor:pointer;color:#333;font-weight:600}
+    @media (max-width:900px){.cart{position:static;width:auto;margin:12px;border-left:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" style="text-decoration:none;display:flex;gap:12px;align-items:center">
+      <div class="brand">
+        <div class="logo">GF</div>
+        <div>
+          <div style="font-weight:700">Go Food</div>
+          <div style="font-size:12px;color:#666">Destination for foodies</div>
+        </div>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <button class="back-btn" onclick="window.location.href='restaurants.html'">← Back to Restaurants</button>
+      <h1 id="restaurant-name">Restaurant Menu</h1>
+      <p id="restaurant-desc"></p>
+    </div>
+
+    <div class="menu-grid" id="menu-grid">
+    </div>
+  </main>
+
+  <aside class="cart" id="cart">
+    <h3>Your Cart</h3>
+    <div class="cart-list" id="cart-list">
+      <div style="color:#888">Cart is empty</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="font-weight:700">Total: ₹<span id="cart-total">0.00</span></div>
+      <div>
+        <button class="btn-small" id="clear-cart">Clear</button>
+        <button class="add-btn" id="view-details">View Details</button>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#666">Note: This is a front-end demo. On checkout the order will be printed to console and saved in localStorage.</div>
+  </aside>
+
+  <footer>
+    © Go Food — Built as a project.
+  </footer>
+
+  <script>
+    const menuGrid = document.getElementById('menu-grid');
+    const cartList = document.getElementById('cart-list');
+    const cartTotalEl = document.getElementById('cart-total');
+    const cartCountEl = document.getElementById('cart-count');
+    let cart = JSON.parse(localStorage.getItem('gofood_cart')||'{}');
+    const restaurant = JSON.parse(localStorage.getItem('selected_restaurant')||'null');
+
+    if(!restaurant){
+      window.location.href = 'restaurants.html';
+    }
+
+    document.getElementById('restaurant-name').textContent = restaurant.name;
+    document.getElementById('restaurant-desc').textContent = restaurant.desc;
+
+    function renderMenu(items){
+      menuGrid.innerHTML = '';
+      items.forEach(it=>{
+        const card = document.createElement('div');
+        card.className='card';
+        card.innerHTML = `
+          <img src="${it.img}" alt="${it.title}">
+          <div class="card-body">
+            <h3 class="card-title">${it.title}</h3>
+            <div class="card-desc">${it.desc}</div>
+            <div style="margin-top:auto" class="card-footer">
+              <div class="price">₹ ${it.price}</div>
+              <button class="add-btn" data-id="${it.id}">Add</button>
+            </div>
+          </div>`;
+        menuGrid.appendChild(card);
+      });
+      document.querySelectorAll('.add-btn').forEach(b=>{
+        b.addEventListener('click',()=>{addToCart(Number(b.dataset.id), restaurant.menu)});
+      });
+    }
+
+    function addToCart(id, items){
+      const item = items.find(m=>m.id===id);
+      if(!item) return;
+      if(cart[id]) cart[id].qty += 1;
+      else cart[id] = { ...item, qty:1 };
+      saveCart();
+      renderCart();
+    }
+
+    function saveCart(){
+      localStorage.setItem('gofood_cart', JSON.stringify(cart));
+    }
+
+    function renderCart(){
+      const keys = Object.keys(cart);
+      cartCountEl.textContent = keys.reduce((s,k)=>s+cart[k].qty,0);
+      if(keys.length===0){
+        cartList.innerHTML = '<div style="color:#888">Cart is empty</div>';
+        cartTotalEl.textContent='0.00';
+        return;
+      }
+      cartList.innerHTML='';
+      let total=0;
+      keys.forEach(k=>{
+        const it = cart[k];
+        total += it.price*it.qty;
+        const div = document.createElement('div');
+        div.className='cart-item';
+        div.innerHTML = `
+          <div style="flex:1">
+            <div style="font-weight:700">${it.title}</div>
+            <div style="font-size:13px;color:#666">₹ ${it.price} × ${it.qty} = ₹ ${it.price*it.qty}</div>
+          </div>
+          <div class="qty">
+            <button class="btn-small" data-act="dec" data-id="${it.id}">-</button>
+            <div style="min-width:22px;text-align:center">${it.qty}</div>
+            <button class="btn-small" data-act="inc" data-id="${it.id}">+</button>
+          </div>`;
+        cartList.appendChild(div);
+      });
+      cartTotalEl.textContent = total.toFixed(2);
+      document.querySelectorAll('.btn-small[data-act]').forEach(b=>{
+        b.addEventListener('click',()=>{
+          const id = Number(b.dataset.id);
+          const act = b.dataset.act;
+          if(act==='inc') cart[id].qty += 1;
+          else {
+            cart[id].qty -= 1;
+            if(cart[id].qty<=0) delete cart[id];
+          }
+          saveCart();
+          renderCart();
+        });
+      });
+    }
+
+    document.getElementById('clear-cart').addEventListener('click',()=>{
+      cart={};
+      saveCart();
+      renderCart();
+    });
+
+    document.getElementById('view-details').addEventListener('click',()=>{
+      window.location.href = 'cart.html';
+    });
+
+
+
+    renderMenu(restaurant.menu);
+    renderCart();
+  </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoFood - Order Food Online | Fast Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/modern-styles.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-utensils"></i> GoFood
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#home" class="nav-link active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="#restaurants" class="nav-link">Restaurants</a>
+        </li>
+        <li class="nav-item">
+          <a href="#offers" class="nav-link">Offers</a>
+        </li>
+        <li class="nav-item">
+          <a href="#why-us" class="nav-link">Why Us</a>
+        </li>
+        <li class="nav-item">
+          <a href="#contact" class="nav-link">Contact</a>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="cart.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge" id="cart-count">0</span>
+        </a>
+        <div id="auth-links" class="auth-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="register.html" class="btn-signup">Sign Up</a>
+        </div>
+        <div id="user-links" class="user-menu" style="display: none;">
+          <a href="profile.html" class="user-profile">
+            <i class="fas fa-user-circle"></i>
+            <span id="user-name">Profile</span>
+          </a>
+          <a href="#" id="logout-link" class="logout-btn">Logout</a>
+        </div>
+      </div>
+
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Order Food From Your Favourite Restaurants</h1>
+      <p class="hero-subtitle">Fast delivery, wide selection, and great prices. All in one app.</p>
+      
+      <div class="search-container">
+        <div class="search-box">
+          <i class="fas fa-map-marker-alt"></i>
+          <input type="text" placeholder="Search your city or area" class="search-input" id="location-input">
+        </div>
+        <button class="search-btn">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+
+      <div class="quick-stats">
+        <div class="stat">
+          <span class="stat-number">500K+</span>
+          <span class="stat-label">Happy Customers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">2000+</span>
+          <span class="stat-label">Restaurants</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">30 mins</span>
+          <span class="stat-label">Avg Delivery</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="images/Homepage.avif" alt="Food Delivery" class="hero-img">
+    </div>
+  </section>
+
+  <!-- Offers Section -->
+  <section id="offers" class="offers-section">
+    <div class="container">
+      <h2 class="section-title">Exclusive Offers For You</h2>
+      <p class="section-subtitle">Check out our amazing deals and discounts</p>
+      
+      <div class="offers-grid">
+        <div class="offer-card">
+          <div class="offer-badge">50% OFF</div>
+          <div class="offer-icon">
+            <i class="fas fa-tags"></i>
+          </div>
+          <h3>Flat 50% Off</h3>
+          <p>On your first order above ₹300</p>
+          <p class="offer-code">Code: <strong>FIRST50</strong></p>
+        </div>
+
+        <div class="offer-card">
+          <div class="offer-badge">FREE</div>
+          <div class="offer-icon">
+            <i class="fas fa-truck"></i>
+          </div>
+          <h3>Free Delivery</h3>
+          <p>On orders above ₹500 across all restaurants</p>
+          <p class="offer-code">Code: <strong>FREEDEL</strong></p>
+        </div>
+
+        <div class="offer-card">
+          <div class="offer-badge">BOGO</div>
+          <div class="offer-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <h3>Buy 1 Get 1</h3>
+          <p>Free on select items at partner restaurants</p>
+          <p class="offer-code">Code: <strong>BOGO50</strong></p>
+        </div>
+
+        <div class="offer-card">
+          <div class="offer-badge">₹100</div>
+          <div class="offer-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h3>Flat ₹100 Off</h3>
+          <p>On orders above ₹600 every Wednesday</p>
+          <p class="offer-code">Code: <strong>WED100</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Restaurants Section -->
+  <section id="restaurants" class="restaurants-section">
+    <div class="container">
+      <h2 class="section-title">Featured Restaurants</h2>
+      <p class="section-subtitle">Choose from our best-rated restaurants</p>
+      
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="fast-food">Fast Food</button>
+        <button class="filter-btn" data-filter="pizza">Pizza</button>
+        <button class="filter-btn" data-filter="indian">Indian</button>
+        <button class="filter-btn" data-filter="chinese">Chinese</button>
+      </div>
+
+      <div class="restaurants-grid" id="restaurants-grid">
+        <!-- Restaurants will be loaded here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section id="why-us" class="why-us-section">
+    <div class="container">
+      <h2 class="section-title">Why Choose GoFood?</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Super Fast Delivery</h3>
+          <p>Get your food delivered in 30 minutes or less with our efficient delivery network.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <h3>Best Restaurants</h3>
+          <p>Partner with the most trusted and highly-rated restaurants in your city.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-map-location-dot"></i>
+          </div>
+          <h3>Live Tracking</h3>
+          <p>Track your order in real-time and know exactly when it will arrive.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Safe & Secure</h3>
+          <p>Your payments are encrypted and your data is protected with the latest security.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-ticket-alt"></i>
+          </div>
+          <h3>Amazing Deals</h3>
+          <p>Enjoy exclusive discounts and offers available only on our platform.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Our customer support team is always ready to help you resolve any issues.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download App Section -->
+  <section class="download-section">
+    <div class="container download-content">
+      <div class="download-text">
+        <h2>Download Our App</h2>
+        <p>Get exclusive app-only deals and faster checkout. Available on iOS and Android.</p>
+        <div class="app-buttons">
+          <button class="app-btn">
+            <i class="fab fa-apple"></i> App Store
+          </button>
+          <button class="app-btn">
+            <i class="fab fa-google-play"></i> Google Play
+          </button>
+        </div>
+      </div>
+      <div class="download-image">
+        <img src="https://via.placeholder.com/300x400/ff6b6b/ffffff?text=GoFood+App" alt="GoFood App" class="app-mockup">
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="container newsletter-content">
+      <h2>Stay Updated</h2>
+      <p>Subscribe to get special offers and updates delivered to your inbox</p>
+      <form class="newsletter-form" id="newsletter-form">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit" class="btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>GoFood</h4>
+          <p>Your trusted food delivery partner, bringing delicious meals to your doorstep.</p>
+          <div class="social-links">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#restaurants">Restaurants</a></li>
+            <li><a href="#offers">Offers</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 GoFood. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy</a> | 
+          <a href="#">Terms</a> | 
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/modern-homepage.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Go Food — Destination for Foodies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#ff6b35;--muted:#f5f5f5;--dark:#222}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; margin:0;color:var(--dark);background:#fff}
+    header{background:linear-gradient(90deg,#fff 0%, #fff 60%, #fff0 100%);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav{display:flex;align-items:center;gap:24px}
+    nav a{text-decoration:none;color:#333;font-weight:600}
+    .auth-links{display:flex;gap:12px}
+    .auth-links .btn{padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-weight:600;text-decoration:none;display:inline-block}
+    .auth-links .btn-login{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+    .auth-links .btn-signup{background:var(--primary);color:#fff}
+    .user-section{display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--muted);border-radius:8px}
+    .user-section a{margin-left:0}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;padding:36px 24px;align-items:center}
+    .hero h1{font-size:28px;margin:0 0 8px}
+    .hero p{margin:0 0 16px;color:#555}
+    .cta{background:var(--primary);color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;display:inline-block}
+    .search{margin-top:12px;display:flex;gap:8px}
+    .search input{flex:1;padding:10px;border-radius:8px;border:1px solid #ddd}
+    .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:24px}
+    .card{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+    .card img{width:100%;height:140px;object-fit:cover}
+    .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
+    .card-title{font-weight:700;margin:0 0 6px}
+    .card-desc{font-size:13px;color:#666;margin-bottom:8px}
+    .card-footer{display:flex;align-items:center;justify-content:space-between}
+    .price{font-weight:700}
+    .add-btn{background:var(--primary);color:#fff;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+    .btn-small{padding:6px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
+    footer{padding:18px 24px;text-align:center;color:#777;border-top:1px solid #eee;margin-top:40px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">GF</div>
+      <div>
+        <div style="font-weight:700">Go Food</div>
+        <div style="font-size:12px;color:#666">Destination for foodies</div>
+      </div>
+    </div>
+    <nav>
+      <div style="display:flex;gap:24px;align-items:center;flex:1">
+        <a href="index.html">Home</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+      </div>
+      <div id="auth-nav">
+        <div class="auth-links">
+          <a class="btn btn-login" href="login.html">Login</a>
+          <a class="btn btn-signup" href="register.html">Sign Up</a>
+        </div>
+      </div>
+      <div id="user-nav" style="display:none" class="user-section">
+        <a href="profile.html" style="color:var(--primary)">👤 <span id="user-name">User</span></a>
+        <a href="#" id="logout-btn" style="color:#e74c3c">Logout</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>Delicious meals delivered fast — right to your door</h1>
+        <p>Locally sourced ingredients, chef-curated menu, and lightning-fast delivery. Browse our menu and add items to your cart.</p>
+        <a class="cta" href="restaurants.html">Order Now</a>
+        <div class="search">
+          <input id="search" placeholder="Search dishes or ingredients...">
+          <button class="btn-small" id="clear-search">Clear</button>
+        </div>
+        <div style="margin-top:14px;font-size:13px;color:#666">Open: 10:00 AM — 11:00 PM</div>
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #eee">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=800&auto=format&fit=crop" alt="hero image" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+    </section>
+
+    <section id="cuisines">
+      <h2 style="padding:0 24px 8px;margin:0">Cuisines</h2>
+      <div class="menu-grid" id="cuisines-grid">
+      </div>
+    </section>
+  </main>
+
+
+
+  <footer>
+    © Go Food — Built as a project. Want a full PHP/MySQL version or a zipped project ready to submit? Tell me and I'll add it.
+  </footer>
+
+  <script>
+    const cuisines = [
+      {id:1,name:'Italian',desc:'Pizza, pasta & more',img:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=800&auto=format&fit=crop'},
+      {id:2,name:'Fast Food',desc:'Burgers & fries',img:'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop'},
+      {id:3,name:'Indian',desc:'Curries & spices',img:'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop'},
+      {id:4,name:'Chinese',desc:'Noodles & rice',img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=800&auto=format&fit=crop'},
+      {id:5,name:'Desserts',desc:'Sweet treats',img:'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop'},
+      {id:6,name:'South Indian',desc:'Dosa & idli',img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop'}
+    ];
+
+    const cuisinesGrid = document.getElementById('cuisines-grid');
+    const cartCountEl = document.getElementById('cart-count');
+
+    let cart = JSON.parse(localStorage.getItem('gofood_cart')||'{}');
+
+    function checkAuth(){
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      const authNav = document.getElementById('auth-nav');
+      const userNav = document.getElementById('user-nav');
+      
+      if(token && user){
+        try{
+          const userData = JSON.parse(user);
+          document.getElementById('user-name').textContent = userData.name || 'User';
+          authNav.style.display = 'none';
+          userNav.style.display = 'flex';
+        }catch(e){}
+      } else {
+        authNav.style.display = 'block';
+        userNav.style.display = 'none';
+      }
+    }
+
+    function renderCuisines(items){
+      cuisinesGrid.innerHTML = '';
+      items.forEach(cuisine=>{
+        const card = document.createElement('div');
+        card.className='card';
+        card.style.cursor='pointer';
+        card.onclick = ()=>{ window.location.href='restaurants.html?cuisine='+cuisine.name; };
+        card.innerHTML = `
+          <img src="${cuisine.img}" alt="${cuisine.name}">
+          <div class="card-body">
+            <h3 class="card-title">${cuisine.name}</h3>
+            <div class="card-desc">${cuisine.desc}</div>
+            <div style="margin-top:auto" class="card-footer">
+              <button class="add-btn" style="width:100%;text-align:center">Explore</button>
+            </div>
+          </div>`;
+        cuisinesGrid.appendChild(card);
+      });
+    }
+
+    function saveCart(){ localStorage.setItem('gofood_cart', JSON.stringify(cart)); }
+
+    function updateCartCount(){
+      const keys = Object.keys(cart);
+      cartCountEl.textContent = keys.reduce((s,k)=>s+cart[k].qty,0);
+    }
+
+    document.getElementById('search').addEventListener('input',(e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      if(!q) renderCuisines(cuisines);
+      else renderCuisines(cuisines.filter(c=>c.name.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q)));
+    });
+    document.getElementById('clear-search').addEventListener('click',()=>{ document.getElementById('search').value=''; renderCuisines(cuisines); });
+
+    document.getElementById('logout-btn').addEventListener('click',(e)=>{
+      e.preventDefault();
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    });
+
+    renderCuisines(cuisines);
+    updateCartCount();
+    checkAuth();
+  </script>
+</body>
+</html>
