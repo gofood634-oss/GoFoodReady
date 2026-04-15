@@ -39,14 +39,14 @@ const api = {
 
   auth: {
     signup(payload) {
-      return api.request('/auth/signup', {
+      return api.request('/api/auth/signup', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
     },
 
     login(payload) {
-      return api.request('/auth/login', {
+      return api.request('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
@@ -66,35 +66,35 @@ const api = {
     },
 
     getAll() {
-      return api.request('/users');
+      return api.request('/api/users');
     },
   },
 
   restaurants: {
     getAll() {
-      return api.request('/restaurants');
+      return api.request('/api/restaurants');
     },
 
     get(id) {
-      return api.request(`/restaurants/${id}`);
+      return api.request(`/api/restaurants/${id}`);
     },
 
     create(payload) {
-      return api.request('/restaurants', {
+      return api.request('/api/restaurants', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
     },
 
     update(id, payload) {
-      return api.request(`/restaurants/${id}`, {
+      return api.request(`/api/restaurants/${id}`, {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
     },
 
     delete(id) {
-      return api.request(`/restaurants/${id}`, {
+      return api.request(`/api/restaurants/${id}`, {
         method: 'DELETE',
       });
     },
@@ -102,33 +102,33 @@ const api = {
 
   items: {
     getAll() {
-      return api.request('/items');
+      return api.request('/api/items');
     },
 
     getByRestaurant(restaurantId) {
-      return api.request(`/items/restaurant/${restaurantId}`);
+      return api.request(`/api/items/restaurant/${restaurantId}`);
     },
 
     get(id) {
-      return api.request(`/items/${id}`);
+      return api.request(`/api/items/${id}`);
     },
 
     create(payload) {
-      return api.request('/items', {
+      return api.request('/api/items', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
     },
 
     update(id, payload) {
-      return api.request(`/items/${id}`, {
+      return api.request(`/api/items/${id}`, {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
     },
 
     delete(id) {
-      return api.request(`/items/${id}`, {
+      return api.request(`/api/items/${id}`, {
         method: 'DELETE',
       });
     },
@@ -136,33 +136,33 @@ const api = {
 
   orders: {
     create(payload) {
-      return api.request('/orders', {
+      return api.request('/api/orders', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
     },
 
     getAll() {
-      return api.request('/orders');
+      return api.request('/api/orders');
     },
 
     getAdminAll() {
-      return api.request('/orders/admin/all');
+      return api.request('/api/orders/admin/all');
     },
 
     get(id) {
-      return api.request(`/orders/${id}`);
+      return api.request(`/api/orders/${id}`);
     },
 
     updateStatus(id, status) {
-      return api.request(`/orders/${id}/status`, {
+      return api.request(`/api/orders/${id}/status`, {
         method: 'PUT',
         body: JSON.stringify({ status }),
       });
     },
 
     cancel(id) {
-      return api.request(`/orders/${id}/cancel`, {
+      return api.request(`/api/orders/${id}/cancel`, {
         method: 'PUT',
       });
     },
@@ -170,18 +170,18 @@ const api = {
 
   wishlist: {
     getAll() {
-      return api.request('/wishlist');
+      return api.request('/api/wishlist');
     },
 
     add(itemId) {
-      return api.request('/wishlist', {
+      return api.request('/api/wishlist', {
         method: 'POST',
         body: JSON.stringify({ itemId }),
       });
     },
 
     remove(id) {
-      return api.request(`/wishlist/${id}`, {
+      return api.request(`/api/wishlist/${id}`, {
         method: 'DELETE',
       });
     },
