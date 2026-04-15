@@ -151,7 +151,7 @@ const api = {
     },
 
     get(id) {
-      return api.request(`/api/orders${id}`);
+      return api.request(`/api/orders/${id}`);
     },
 
     updateStatus(id, status) {
